@@ -2,4 +2,18 @@
 title: "About"
 ---
 
-About this site
+## Background
+
+I studied statistics and mathematics at the University of Toronto before joining UBC's Master of Data Science program. I am interested in bringing that quantitative background into practical work with data.
+
+## Interests and goals
+
+My main interests are quantitative finance and machine learning. Through MDS, I hope to strengthen my programming and data science skills and explore how statistical and mathematical ideas can support useful models in these fields.
+
+## A new chapter in Vancouver
+
+I have enjoyed Vancouver's climate during my first weeks here. The warm welcome from the TAs and instructors has also helped me settle into the program. Their approachable attitude is something I have particularly appreciated as I begin this new chapter.
+
+## My avatar
+
+The illustration on my home page is my WeChat avatar. I chose it as a familiar way to represent myself on this website.

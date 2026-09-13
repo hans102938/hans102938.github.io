@@ -2,15 +2,43 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "website",
+    "title": "Hans",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+    "text": "Hi, I am Hans, a student in the Master of Data Science program at UBC. Before joining MDS, I studied statistics and mathematics at the University of Toronto. My interests are quantitative finance and machine learning, and I hope to connect my mathematical background with practical skills in data analysis and modelling. This website is a place to share my learning and experiences throughout the program."
   },
   {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "About this site"
+    "text": "I studied statistics and mathematics at the University of Toronto before joining UBC’s Master of Data Science program. I am interested in bringing that quantitative background into practical work with data."
+  },
+  {
+    "objectID": "about.html#background",
+    "href": "about.html#background",
+    "title": "About",
+    "section": "",
+    "text": "I studied statistics and mathematics at the University of Toronto before joining UBC’s Master of Data Science program. I am interested in bringing that quantitative background into practical work with data."
+  },
+  {
+    "objectID": "about.html#interests-and-goals",
+    "href": "about.html#interests-and-goals",
+    "title": "About",
+    "section": "Interests and goals",
+    "text": "Interests and goals\nMy main interests are quantitative finance and machine learning. Through MDS, I hope to strengthen my programming and data science skills and explore how statistical and mathematical ideas can support useful models in these fields."
+  },
+  {
+    "objectID": "about.html#a-new-chapter-in-vancouver",
+    "href": "about.html#a-new-chapter-in-vancouver",
+    "title": "About",
+    "section": "A new chapter in Vancouver",
+    "text": "A new chapter in Vancouver\nI have enjoyed Vancouver’s climate during my first weeks here. The warm welcome from the TAs and instructors has also helped me settle into the program. Their approachable attitude is something I have particularly appreciated as I begin this new chapter."
+  },
+  {
+    "objectID": "about.html#my-avatar",
+    "href": "about.html#my-avatar",
+    "title": "About",
+    "section": "My avatar",
+    "text": "My avatar\nThe illustration on my home page is my WeChat avatar. I chose it as a familiar way to represent myself on this website."
   }
 ]
