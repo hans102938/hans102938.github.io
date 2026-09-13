@@ -9,6 +9,8 @@ website:
       - href: index.qmd
         text: Home
       - about.qmd
+      - href: blog.qmd
+        text: Blog
 
 format:
   html:
@@ -17,5 +19,4 @@ format:
       - brand
     css: styles.css
     toc: true
-
 

@@ -1,10 +1,17 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Hans",
+    "objectID": "posts/first-weeks/index.html",
+    "href": "posts/first-weeks/index.html",
+    "title": "My First Weeks in MDS",
     "section": "",
-    "text": "Hi, I am Hans, a student in the Master of Data Science program at UBC. Before joining MDS, I studied statistics and mathematics at the University of Toronto. My interests are quantitative finance and machine learning, and I hope to connect my mathematical background with practical skills in data analysis and modelling. This website is a place to share my learning and experiences throughout the program."
+    "text": "My first weeks in UBC’s Master of Data Science program have marked a new chapter after studying statistics and mathematics at the University of Toronto. I am looking forward to building on that background and developing more practical skills in data science. My interests in quantitative finance and machine learning give me a direction to explore as I begin the program.\nOne of my first impressions of Vancouver has been how much I enjoy the climate here. It has been a pleasant part of the move and has helped make the start of the program feel welcoming. Alongside the academic transition, getting used to a new city is an important part of this experience, and so far Vancouver has left me with a positive impression.\nI have also really appreciated the warmth of the TAs and instructors. Their welcoming attitude has made the beginning of MDS feel more comfortable and encouraging. As the program continues, I hope to build my confidence with new tools and connect what I learn to my longer-term interests in quantitative finance and machine learning.\n\n\n\nMy WeChat avatar, a familiar image accompanying a new chapter at UBC."
+  },
+  {
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "Blog",
+    "section": "",
+    "text": "My First Weeks in MDS\n\n\n\n\n\n\n\n\nSep 14, 2026\n\n\nHans\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",
@@ -40,5 +47,12 @@
     "title": "About",
     "section": "My avatar",
     "text": "My avatar\nThe illustration on my home page is my WeChat avatar. I chose it as a familiar way to represent myself on this website."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Hans",
+    "section": "",
+    "text": "Hi, I am Hans, a student in the Master of Data Science program at UBC. Before joining MDS, I studied statistics and mathematics at the University of Toronto. My interests are quantitative finance and machine learning, and I hope to connect my mathematical background with practical skills in data analysis and modelling. This website is a place to share my learning and experiences throughout the program."
   }
 ]

@@ -1,0 +1,13 @@
+---
+title: "My First Weeks in MDS"
+author: "Hans"
+date: 2026-09-14
+---
+
+My first weeks in UBC's Master of Data Science program have marked a new chapter after studying statistics and mathematics at the University of Toronto. I am looking forward to building on that background and developing more practical skills in data science. My interests in quantitative finance and machine learning give me a direction to explore as I begin the program.
+
+One of my first impressions of Vancouver has been how much I enjoy the climate here. It has been a pleasant part of the move and has helped make the start of the program feel welcoming. Alongside the academic transition, getting used to a new city is an important part of this experience, and so far Vancouver has left me with a positive impression.
+
+I have also really appreciated the warmth of the TAs and instructors. Their welcoming attitude has made the beginning of MDS feel more comfortable and encouraging. As the program continues, I hope to build my confidence with new tools and connect what I learn to my longer-term interests in quantitative finance and machine learning.
+
+![My WeChat avatar, a familiar image accompanying a new chapter at UBC.](avatar.png){width=350px fig-alt="My illustrated WeChat avatar"}
