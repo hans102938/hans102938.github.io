@@ -1,0 +1,11 @@
+[project]
+name = "hans102938-github-io"
+version = "0.1.0"
+description = "Quarto website for DSCI 521"
+requires-python = ">=3.12"
+dependencies = [
+    "jupyter",
+    "matplotlib",
+    "numpy",
+    "pandas",
+]
