@@ -1,0 +1,112 @@
+---
+title: "What Predicts House Sale Prices in Ames?"
+author: "Hans"
+date: "2026-09-26"
+categories: [R, regression, housing]
+---
+
+This short post uses the Ames Housing dataset to fit a simple multiple linear regression model for house sale price. The goal is not to build the best possible prediction model, but to check whether a few basic property features explain a useful amount of variation in prices.
+
+Data: [Ames Housing dataset](https://github.com/topepo/AmesHousing), based on De Cock (2011), "Ames, Iowa: Alternative to the Boston Housing Data as an End of Semester Regression Project." The `AmesHousing` package is GPL-2 licensed.
+
+```{r}
+#| message: false
+#| warning: false
+
+library(ggplot2)
+```
+
+## Load and select variables
+
+I use sale price as the response variable. The predictors are overall quality, living area, basement area, garage area, lot area, and year built.
+
+```{r}
+ames <- read.csv("AmesHousing.csv")
+
+housing <- data.frame(
+  SalePrice = ames$SalePrice,
+  Overall_Qual = ames$Overall.Qual,
+  Gr_Liv_Area = ames$Gr.Liv.Area,
+  Total_Bsmt_SF = ames$Total.Bsmt.SF,
+  Garage_Area = ames$Garage.Area,
+  Lot_Area = ames$Lot.Area,
+  Year_Built = ames$Year.Built
+)
+
+housing <- housing[complete.cases(housing), ]
+
+head(housing)
+```
+
+## Quick summary
+
+The dataset has 2,929 complete rows for these selected variables. Sale prices vary widely, so a regression model should be interpreted as a rough summary rather than a perfect pricing tool.
+
+```{r}
+summary_table <- data.frame(
+  homes = nrow(housing),
+  mean_price = mean(housing$SalePrice),
+  median_price = median(housing$SalePrice),
+  mean_living_area = mean(housing$Gr_Liv_Area),
+  mean_overall_quality = mean(housing$Overall_Qual)
+)
+
+summary_table
+```
+
+## Figure
+
+The figure shows a strong positive relationship between above-ground living area and sale price. The colour gradient suggests that overall quality also matters.
+
+```{r}
+#| label: fig-ames-price-area
+#| fig-cap: "Sale price tends to increase with living area, especially for higher-quality homes."
+
+ggplot(housing, aes(x = Gr_Liv_Area, y = SalePrice, color = Overall_Qual)) +
+  geom_point(alpha = 0.45) +
+  geom_smooth(method = "lm", se = FALSE, color = "black") +
+  labs(
+    x = "Above-ground living area",
+    y = "Sale price",
+    color = "Overall quality"
+  ) +
+  theme_minimal()
+```
+
+## Multiple linear regression
+
+The model uses a small set of interpretable predictors. I include `log(SalePrice)` because house prices are right-skewed and percentage-style changes are easier to interpret.
+
+```{r}
+model <- lm(
+  log(SalePrice) ~ Overall_Qual + Gr_Liv_Area + Total_Bsmt_SF +
+    Garage_Area + Lot_Area + Year_Built,
+  data = housing
+)
+
+summary(model)
+```
+
+## Model diagnostics
+
+The fitted-versus-observed plot shows that the model captures the main price pattern, although expensive homes still have more spread. This is expected for a simple MVLR model with only a few predictors.
+
+```{r}
+#| label: fig-ames-fitted
+#| fig-cap: "Observed and fitted sale prices from the multiple linear regression model."
+
+housing$fitted_price <- exp(fitted(model))
+
+ggplot(housing, aes(x = fitted_price, y = SalePrice)) +
+  geom_point(alpha = 0.45) +
+  geom_abline(slope = 1, intercept = 0, color = "red", linetype = "dashed") +
+  labs(
+    x = "Fitted sale price",
+    y = "Observed sale price"
+  ) +
+  theme_minimal()
+```
+
+## Takeaway
+
+Overall quality and living area are the clearest positive predictors in this simple model. Basement size, garage area, lot area, and year built add extra information, but the model is still only a compact summary of prices rather than a full appraisal model.

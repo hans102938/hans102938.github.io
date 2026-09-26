@@ -1,0 +1,137 @@
+---
+title: "A Python Look at Ames Housing Prices"
+author: "Hans"
+date: "2026-09-26"
+categories: [Python, regression, housing]
+---
+
+This post uses the Ames Housing dataset to fit a simple multiple linear regression model in Python. The goal is intentionally modest: use a few easy-to-understand housing features to explain sale price and make a small number of useful plots.
+
+Data: [Ames Housing dataset](https://github.com/topepo/AmesHousing), based on De Cock (2011), "Ames, Iowa: Alternative to the Boston Housing Data as an End of Semester Regression Project." The `AmesHousing` package is GPL-2 licensed.
+
+```{python}
+#| message: false
+#| warning: false
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+```
+
+## Load and prepare data
+
+The response variable is sale price. I use overall quality, living area, basement area, garage area, lot area, and year built as simple predictors.
+
+```{python}
+ames = pd.read_csv("AmesHousing.csv")
+
+housing = ames[[
+    "SalePrice",
+    "Overall Qual",
+    "Gr Liv Area",
+    "Total Bsmt SF",
+    "Garage Area",
+    "Lot Area",
+    "Year Built",
+]].dropna().copy()
+
+housing.columns = [
+    "sale_price",
+    "overall_quality",
+    "living_area",
+    "basement_area",
+    "garage_area",
+    "lot_area",
+    "year_built",
+]
+
+housing.head()
+```
+
+## Summary table
+
+The selected data have almost all homes in the original file. Sale prices have a high mean relative to the median, suggesting some expensive homes pull the average upward.
+
+```{python}
+summary = pd.DataFrame({
+    "homes": [len(housing)],
+    "mean_price": [housing["sale_price"].mean()],
+    "median_price": [housing["sale_price"].median()],
+    "mean_living_area": [housing["living_area"].mean()],
+    "mean_quality": [housing["overall_quality"].mean()],
+})
+
+summary.round(2)
+```
+
+## Sale price and living area
+
+```{python}
+#| label: fig-python-ames-area
+#| fig-cap: "Ames sale price generally increases with above-ground living area."
+
+fig, ax = plt.subplots(figsize=(7, 4))
+ax.scatter(housing["living_area"], housing["sale_price"], alpha=0.35)
+ax.set_xlabel("Above-ground living area")
+ax.set_ylabel("Sale price")
+ax.set_title("Sale price vs. living area")
+plt.tight_layout()
+plt.show()
+```
+
+## Multiple linear regression
+
+This model predicts log sale price. I fit the regression with `numpy.linalg.lstsq()` so the code stays short and does not need an extra modelling package.
+
+```{python}
+predictors = [
+    "overall_quality",
+    "living_area",
+    "basement_area",
+    "garage_area",
+    "lot_area",
+    "year_built",
+]
+
+X = housing[predictors].to_numpy()
+X = np.column_stack([np.ones(len(X)), X])
+y = np.log(housing["sale_price"].to_numpy())
+
+coef, residuals, rank, s = np.linalg.lstsq(X, y, rcond=None)
+fitted_log_price = X @ coef
+
+ss_res = np.sum((y - fitted_log_price) ** 2)
+ss_tot = np.sum((y - y.mean()) ** 2)
+r_squared = 1 - ss_res / ss_tot
+
+coef_table = pd.DataFrame({
+    "term": ["Intercept"] + predictors,
+    "coefficient": coef,
+})
+
+coef_table.round(4), round(r_squared, 3)
+```
+
+## Observed vs fitted prices
+
+```{python}
+#| label: fig-python-ames-fitted
+#| fig-cap: "Observed and fitted sale prices from the Python MVLR model."
+
+housing["fitted_price"] = np.exp(fitted_log_price)
+
+fig, ax = plt.subplots(figsize=(5, 5))
+ax.scatter(housing["fitted_price"], housing["sale_price"], alpha=0.35)
+low = min(housing["fitted_price"].min(), housing["sale_price"].min())
+high = max(housing["fitted_price"].max(), housing["sale_price"].max())
+ax.plot([low, high], [low, high], color="red", linestyle="--")
+ax.set_xlabel("Fitted sale price")
+ax.set_ylabel("Observed sale price")
+ax.set_title("Observed vs. fitted sale price")
+plt.tight_layout()
+plt.show()
+```
+
+## Takeaway
+
+The Python model tells the same basic story as the R model: overall quality and living area are strong predictors of sale price. The fitted plot shows that a small MVLR can capture the broad price pattern, but there is still variation left over because many housing details are not included.
