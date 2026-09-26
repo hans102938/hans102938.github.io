@@ -213,7 +213,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p>This post uses the Ames Housing dataset to fit a simple multiple linear regression model in Python. The goal is intentionally modest: use a few easy-to-understand housing features to explain sale price and make a small number of useful plots.</p>
 <p>Data: <a href="https://github.com/topepo/AmesHousing">Ames Housing dataset</a>, based on De Cock (2011), “Ames, Iowa: Alternative to the Boston Housing Data as an End of Semester Regression Project.” The <code>AmesHousing</code> package is GPL-2 licensed.</p>
-<div id="3779e31f" class="cell" data-message="false" data-execution_count="1">
+<div id="997c9c98" class="cell" data-message="false" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -221,7 +221,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="load-and-prepare-data" class="level2">
 <h2 class="anchored" data-anchor-id="load-and-prepare-data">Load and prepare data</h2>
 <p>The response variable is sale price. I use overall quality, living area, basement area, garage area, lot area, and year built as simple predictors.</p>
-<div id="3cec7ef2" class="cell" data-execution_count="2">
+<div id="d3da168f" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>ames <span class="op">=</span> pd.read_csv(<span class="st">"AmesHousing.csv"</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>housing <span class="op">=</span> ames[[</span>
@@ -323,7 +323,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="summary-table" class="level2">
 <h2 class="anchored" data-anchor-id="summary-table">Summary table</h2>
 <p>The selected data have almost all homes in the original file. Sale prices have a high mean relative to the median, suggesting some expensive homes pull the average upward.</p>
-<div id="09136b9e" class="cell" data-execution_count="3">
+<div id="3f43f62d" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>summary <span class="op">=</span> pd.DataFrame({</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"homes"</span>: [<span class="bu">len</span>(housing)],</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"mean_price"</span>: [housing[<span class="st">"sale_price"</span>].mean()],</span>
@@ -391,7 +391,7 @@ Figure&nbsp;1: Ames sale price generally increases with above-ground living area
 <section id="multiple-linear-regression" class="level2">
 <h2 class="anchored" data-anchor-id="multiple-linear-regression">Multiple linear regression</h2>
 <p>This model predicts log sale price. I fit the regression with <code>numpy.linalg.lstsq()</code> so the code stays short and does not need an extra modelling package.</p>
-<div id="7ae6e9c3" class="cell" data-execution_count="5">
+<div id="00391f36" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>predictors <span class="op">=</span> [</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"overall_quality"</span>,</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"living_area"</span>,</span>
