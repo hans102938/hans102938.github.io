@@ -7,11 +7,60 @@
     "text": "My first weeks in UBC’s Master of Data Science program have marked a new chapter after studying statistics and mathematics at the University of Toronto. I am looking forward to building on that background and developing more practical skills in data science. My interests in quantitative finance and machine learning give me a direction to explore as I begin the program.\nOne of my first impressions of Vancouver has been how much I enjoy the climate here. It has been a pleasant part of the move and has helped make the start of the program feel welcoming. Alongside the academic transition, getting used to a new city is an important part of this experience, and so far Vancouver has left me with a positive impression.\nI have also really appreciated the warmth of the TAs and instructors. Their welcoming attitude has made the beginning of MDS feel more comfortable and encouraging. As the program continues, I hope to build my confidence with new tools and connect what I learn to my longer-term interests in quantitative finance and machine learning.\n\n\n\nMy WeChat avatar, a familiar image accompanying a new chapter at UBC."
   },
   {
+    "objectID": "posts/ames-housing/index.html",
+    "href": "posts/ames-housing/index.html",
+    "title": "What Predicts House Sale Prices in Ames?",
+    "section": "",
+    "text": "This short post uses the Ames Housing dataset to fit a simple multiple linear regression model for house sale price. The goal is not to build the best possible prediction model, but to check whether a few basic property features explain a useful amount of variation in prices.\nData: Ames Housing dataset, based on De Cock (2011), “Ames, Iowa: Alternative to the Boston Housing Data as an End of Semester Regression Project.” The AmesHousing package is GPL-2 licensed.\nlibrary(ggplot2)"
+  },
+  {
+    "objectID": "posts/ames-housing/index.html#load-and-select-variables",
+    "href": "posts/ames-housing/index.html#load-and-select-variables",
+    "title": "What Predicts House Sale Prices in Ames?",
+    "section": "Load and select variables",
+    "text": "Load and select variables\nI use sale price as the response variable. The predictors are overall quality, living area, basement area, garage area, lot area, and year built.\n\names &lt;- read.csv(\"AmesHousing.csv\")\n\nhousing &lt;- data.frame(\n  SalePrice = ames$SalePrice,\n  Overall_Qual = ames$Overall.Qual,\n  Gr_Liv_Area = ames$Gr.Liv.Area,\n  Total_Bsmt_SF = ames$Total.Bsmt.SF,\n  Garage_Area = ames$Garage.Area,\n  Lot_Area = ames$Lot.Area,\n  Year_Built = ames$Year.Built\n)\n\nhousing &lt;- housing[complete.cases(housing), ]\n\nhead(housing)\n\n  SalePrice Overall_Qual Gr_Liv_Area Total_Bsmt_SF Garage_Area Lot_Area\n1    215000            6        1656          1080         528    31770\n2    105000            5         896           882         730    11622\n3    172000            6        1329          1329         312    14267\n4    244000            7        2110          2110         522    11160\n5    189900            5        1629           928         482    13830\n6    195500            6        1604           926         470     9978\n  Year_Built\n1       1960\n2       1961\n3       1958\n4       1968\n5       1997\n6       1998"
+  },
+  {
+    "objectID": "posts/ames-housing/index.html#quick-summary",
+    "href": "posts/ames-housing/index.html#quick-summary",
+    "title": "What Predicts House Sale Prices in Ames?",
+    "section": "Quick summary",
+    "text": "Quick summary\nThe dataset has 2,929 complete rows for these selected variables. Sale prices vary widely, so a regression model should be interpreted as a rough summary rather than a perfect pricing tool.\n\nsummary_table &lt;- data.frame(\n  homes = nrow(housing),\n  mean_price = mean(housing$SalePrice),\n  median_price = median(housing$SalePrice),\n  mean_living_area = mean(housing$Gr_Liv_Area),\n  mean_overall_quality = mean(housing$Overall_Qual)\n)\n\nsummary_table\n\n  homes mean_price median_price mean_living_area mean_overall_quality\n1  2928     180841       160000         1499.784              6.09597"
+  },
+  {
+    "objectID": "posts/ames-housing/index.html#figure",
+    "href": "posts/ames-housing/index.html#figure",
+    "title": "What Predicts House Sale Prices in Ames?",
+    "section": "Figure",
+    "text": "Figure\nThe figure shows a strong positive relationship between above-ground living area and sale price. The colour gradient suggests that overall quality also matters.\n\nggplot(housing, aes(x = Gr_Liv_Area, y = SalePrice, color = Overall_Qual)) +\n  geom_point(alpha = 0.45) +\n  geom_smooth(method = \"lm\", se = FALSE, color = \"black\") +\n  labs(\n    x = \"Above-ground living area\",\n    y = \"Sale price\",\n    color = \"Overall quality\"\n  ) +\n  theme_minimal()\n\n`geom_smooth()` using formula = 'y ~ x'\n\n\n\n\n\n\n\n\nFigure 1: Sale price tends to increase with living area, especially for higher-quality homes."
+  },
+  {
+    "objectID": "posts/ames-housing/index.html#multiple-linear-regression",
+    "href": "posts/ames-housing/index.html#multiple-linear-regression",
+    "title": "What Predicts House Sale Prices in Ames?",
+    "section": "Multiple linear regression",
+    "text": "Multiple linear regression\nThe model uses a small set of interpretable predictors. I include log(SalePrice) because house prices are right-skewed and percentage-style changes are easier to interpret.\n\nmodel &lt;- lm(\n  log(SalePrice) ~ Overall_Qual + Gr_Liv_Area + Total_Bsmt_SF +\n    Garage_Area + Lot_Area + Year_Built,\n  data = housing\n)\n\nsummary(model)\n\n\nCall:\nlm(formula = log(SalePrice) ~ Overall_Qual + Gr_Liv_Area + Total_Bsmt_SF + \n    Garage_Area + Lot_Area + Year_Built, data = housing)\n\nResiduals:\n     Min       1Q   Median       3Q      Max \n-2.52257 -0.07434  0.01100  0.09216  0.66267 \n\nCoefficients:\n               Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)   5.441e+00  2.610e-01  20.847   &lt;2e-16 ***\nOverall_Qual  1.176e-01  3.523e-03  33.383   &lt;2e-16 ***\nGr_Liv_Area   2.301e-04  8.294e-06  27.748   &lt;2e-16 ***\nTotal_Bsmt_SF 1.113e-04  9.127e-06  12.194   &lt;2e-16 ***\nGarage_Area   2.159e-04  1.941e-05  11.123   &lt;2e-16 ***\nLot_Area      3.854e-06  4.300e-07   8.963   &lt;2e-16 ***\nYear_Built    2.668e-03  1.372e-04  19.448   &lt;2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 0.1706 on 2921 degrees of freedom\nMultiple R-squared:  0.8251,    Adjusted R-squared:  0.8247 \nF-statistic:  2296 on 6 and 2921 DF,  p-value: &lt; 2.2e-16"
+  },
+  {
+    "objectID": "posts/ames-housing/index.html#model-diagnostics",
+    "href": "posts/ames-housing/index.html#model-diagnostics",
+    "title": "What Predicts House Sale Prices in Ames?",
+    "section": "Model diagnostics",
+    "text": "Model diagnostics\nThe fitted-versus-observed plot shows that the model captures the main price pattern, although expensive homes still have more spread. This is expected for a simple MVLR model with only a few predictors.\n\nhousing$fitted_price &lt;- exp(fitted(model))\n\nggplot(housing, aes(x = fitted_price, y = SalePrice)) +\n  geom_point(alpha = 0.45) +\n  geom_abline(slope = 1, intercept = 0, color = \"red\", linetype = \"dashed\") +\n  labs(\n    x = \"Fitted sale price\",\n    y = \"Observed sale price\"\n  ) +\n  theme_minimal()\n\n\n\n\n\n\n\nFigure 2: Observed and fitted sale prices from the multiple linear regression model."
+  },
+  {
+    "objectID": "posts/ames-housing/index.html#takeaway",
+    "href": "posts/ames-housing/index.html#takeaway",
+    "title": "What Predicts House Sale Prices in Ames?",
+    "section": "Takeaway",
+    "text": "Takeaway\nOverall quality and living area are the clearest positive predictors in this simple model. Basement size, garage area, lot area, and year built add extra information, but the model is still only a compact summary of prices rather than a full appraisal model."
+  },
+  {
     "objectID": "blog.html",
     "href": "blog.html",
     "title": "Blog",
     "section": "",
-    "text": "My First Weeks in MDS\n\n\n\n\n\n\n\n\nSep 14, 2026\n\n\nHans\n\n\n\n\n\nNo matching items"
+    "text": "What Predicts House Sale Prices in Ames?\n\n\n\n\n\n\n\n\nSep 26, 2026\n\n\nHans\n\n\n\n\n\n\n\n\n\n\n\n\nA Python Look at Ames Housing Prices\n\n\n\n\n\n\n\n\nSep 26, 2026\n\n\nHans\n\n\n\n\n\n\n\n\n\n\n\n\nMy First Weeks in MDS\n\n\n\n\n\n\n\n\nSep 14, 2026\n\n\nHans\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",
@@ -54,5 +103,54 @@
     "title": "Hans",
     "section": "",
     "text": "Hi, I am Hans, a student in the Master of Data Science program at UBC. Before joining MDS, I studied statistics and mathematics at the University of Toronto. My interests are quantitative finance and machine learning, and I hope to connect my mathematical background with practical skills in data analysis and modelling. This website is a place to share my learning and experiences throughout the program."
+  },
+  {
+    "objectID": "posts/ames-housing-python/index.html",
+    "href": "posts/ames-housing-python/index.html",
+    "title": "A Python Look at Ames Housing Prices",
+    "section": "",
+    "text": "This post uses the Ames Housing dataset to fit a simple multiple linear regression model in Python. The goal is intentionally modest: use a few easy-to-understand housing features to explain sale price and make a small number of useful plots.\nData: Ames Housing dataset, based on De Cock (2011), “Ames, Iowa: Alternative to the Boston Housing Data as an End of Semester Regression Project.” The AmesHousing package is GPL-2 licensed.\nimport numpy as np\nimport pandas as pd\nimport matplotlib.pyplot as plt"
+  },
+  {
+    "objectID": "posts/ames-housing-python/index.html#load-and-prepare-data",
+    "href": "posts/ames-housing-python/index.html#load-and-prepare-data",
+    "title": "A Python Look at Ames Housing Prices",
+    "section": "Load and prepare data",
+    "text": "Load and prepare data\nThe response variable is sale price. I use overall quality, living area, basement area, garage area, lot area, and year built as simple predictors.\n\names = pd.read_csv(\"AmesHousing.csv\")\n\nhousing = ames[[\n    \"SalePrice\",\n    \"Overall Qual\",\n    \"Gr Liv Area\",\n    \"Total Bsmt SF\",\n    \"Garage Area\",\n    \"Lot Area\",\n    \"Year Built\",\n]].dropna().copy()\n\nhousing.columns = [\n    \"sale_price\",\n    \"overall_quality\",\n    \"living_area\",\n    \"basement_area\",\n    \"garage_area\",\n    \"lot_area\",\n    \"year_built\",\n]\n\nhousing.head()\n\n\n\n\n\n\n\n\nsale_price\noverall_quality\nliving_area\nbasement_area\ngarage_area\nlot_area\nyear_built\n\n\n\n\n0\n215000\n6\n1656\n1080.0\n528.0\n31770\n1960\n\n\n1\n105000\n5\n896\n882.0\n730.0\n11622\n1961\n\n\n2\n172000\n6\n1329\n1329.0\n312.0\n14267\n1958\n\n\n3\n244000\n7\n2110\n2110.0\n522.0\n11160\n1968\n\n\n4\n189900\n5\n1629\n928.0\n482.0\n13830\n1997"
+  },
+  {
+    "objectID": "posts/ames-housing-python/index.html#summary-table",
+    "href": "posts/ames-housing-python/index.html#summary-table",
+    "title": "A Python Look at Ames Housing Prices",
+    "section": "Summary table",
+    "text": "Summary table\nThe selected data have almost all homes in the original file. Sale prices have a high mean relative to the median, suggesting some expensive homes pull the average upward.\n\nsummary = pd.DataFrame({\n    \"homes\": [len(housing)],\n    \"mean_price\": [housing[\"sale_price\"].mean()],\n    \"median_price\": [housing[\"sale_price\"].median()],\n    \"mean_living_area\": [housing[\"living_area\"].mean()],\n    \"mean_quality\": [housing[\"overall_quality\"].mean()],\n})\n\nsummary.round(2)\n\n\n\n\n\n\n\n\nhomes\nmean_price\nmedian_price\nmean_living_area\nmean_quality\n\n\n\n\n0\n2928\n180841.03\n160000.0\n1499.78\n6.1"
+  },
+  {
+    "objectID": "posts/ames-housing-python/index.html#sale-price-and-living-area",
+    "href": "posts/ames-housing-python/index.html#sale-price-and-living-area",
+    "title": "A Python Look at Ames Housing Prices",
+    "section": "Sale price and living area",
+    "text": "Sale price and living area\n\nfig, ax = plt.subplots(figsize=(7, 4))\nax.scatter(housing[\"living_area\"], housing[\"sale_price\"], alpha=0.35)\nax.set_xlabel(\"Above-ground living area\")\nax.set_ylabel(\"Sale price\")\nax.set_title(\"Sale price vs. living area\")\nplt.tight_layout()\nplt.show()\n\n\n\n\n\n\n\nFigure 1: Ames sale price generally increases with above-ground living area."
+  },
+  {
+    "objectID": "posts/ames-housing-python/index.html#multiple-linear-regression",
+    "href": "posts/ames-housing-python/index.html#multiple-linear-regression",
+    "title": "A Python Look at Ames Housing Prices",
+    "section": "Multiple linear regression",
+    "text": "Multiple linear regression\nThis model predicts log sale price. I fit the regression with numpy.linalg.lstsq() so the code stays short and does not need an extra modelling package.\n\npredictors = [\n    \"overall_quality\",\n    \"living_area\",\n    \"basement_area\",\n    \"garage_area\",\n    \"lot_area\",\n    \"year_built\",\n]\n\nX = housing[predictors].to_numpy()\nX = np.column_stack([np.ones(len(X)), X])\ny = np.log(housing[\"sale_price\"].to_numpy())\n\ncoef, residuals, rank, s = np.linalg.lstsq(X, y, rcond=None)\nfitted_log_price = X @ coef\n\nss_res = np.sum((y - fitted_log_price) ** 2)\nss_tot = np.sum((y - y.mean()) ** 2)\nr_squared = 1 - ss_res / ss_tot\n\ncoef_table = pd.DataFrame({\n    \"term\": [\"Intercept\"] + predictors,\n    \"coefficient\": coef,\n})\n\ncoef_table.round(4), round(r_squared, 3)\n\n(              term  coefficient\n 0        Intercept       5.4410\n 1  overall_quality       0.1176\n 2      living_area       0.0002\n 3    basement_area       0.0001\n 4      garage_area       0.0002\n 5         lot_area       0.0000\n 6       year_built       0.0027,\n np.float64(0.825))"
+  },
+  {
+    "objectID": "posts/ames-housing-python/index.html#observed-vs-fitted-prices",
+    "href": "posts/ames-housing-python/index.html#observed-vs-fitted-prices",
+    "title": "A Python Look at Ames Housing Prices",
+    "section": "Observed vs fitted prices",
+    "text": "Observed vs fitted prices\n\nhousing[\"fitted_price\"] = np.exp(fitted_log_price)\n\nfig, ax = plt.subplots(figsize=(5, 5))\nax.scatter(housing[\"fitted_price\"], housing[\"sale_price\"], alpha=0.35)\nlow = min(housing[\"fitted_price\"].min(), housing[\"sale_price\"].min())\nhigh = max(housing[\"fitted_price\"].max(), housing[\"sale_price\"].max())\nax.plot([low, high], [low, high], color=\"red\", linestyle=\"--\")\nax.set_xlabel(\"Fitted sale price\")\nax.set_ylabel(\"Observed sale price\")\nax.set_title(\"Observed vs. fitted sale price\")\nplt.tight_layout()\nplt.show()\n\n\n\n\n\n\n\nFigure 2: Observed and fitted sale prices from the Python MVLR model."
+  },
+  {
+    "objectID": "posts/ames-housing-python/index.html#takeaway",
+    "href": "posts/ames-housing-python/index.html#takeaway",
+    "title": "A Python Look at Ames Housing Prices",
+    "section": "Takeaway",
+    "text": "Takeaway\nThe Python model tells the same basic story as the R model: overall quality and living area are strong predictors of sale price. The fitted plot shows that a small MVLR can capture the broad price pattern, but there is still variation left over because many housing details are not included."
   }
 ]
